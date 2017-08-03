@@ -29,25 +29,13 @@ public class MainController {
 
     @Autowired
     private MainService mainService;
+    @Autowired
+    private TaranRepository taranRepository;
+    @Autowired
+    private PamantRepository pamantRepository;
+
     private static final Logger log = LoggerFactory.getLogger(MainController.class);
     private Cronometer cronometer=new Cronometer();
-    //private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
-
-//    @RequestMapping(path="/add",method = RequestMethod.POST)
-//    @ResponseBody
-//    public String addTarani( @RequestBody TaranDTO input){
-//
-//        try {
-//            mainService.addTaran(input);
-//        } catch (AgeException | GenException | AreaException validationException) {
-//          return validationException.getMessage();
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//    return "ok";
-//    }
 
     @RequestMapping(path="/addTaran",method = RequestMethod.POST)
     @ResponseBody
@@ -55,22 +43,16 @@ public class MainController {
 
         cronometer.startTimer();
 
-
         try {
             mainService.addNewTaran(taran);
         } catch (AgeException | GenException  | javax.validation.ConstraintViolationException validationException) {
                return validationException.getMessage();
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+
         cronometer.stopTimer();
         log.info("Execution took {} miliseconds! ",cronometer.time());
 
-        return "ok";
-
-
+        return "Taran adaugat.";
     }
 
 
@@ -90,94 +72,14 @@ public class MainController {
         }
         cronometer.stopTimer();
         log.info("Execution took {} miliseconds! ",cronometer.time());
-        return "ok";
+
+        return "Pamant adaugat!";
     }
 
+    @RequestMapping(path="/lstTaran",method = RequestMethod.GET)
+    public @ResponseBody Iterable<Taran> getAllTarani() {
+        return getAllTarani();
 
-
-
-
-//
-//    @Autowired
-//  private MainServiceDTO mainServiceDTO;
-//
-//
-//    @RequestMapping(path = "/dtoLstPamanturi")
-//    public @ResponseBody Collection<PamantDTO> pamanturiDtoToArrayList() {
-//
-//        return mainServiceDTO.pamanturiDtoToArrayList();
-//    }
-//
-//    @RequestMapping(path = "/dtoLstTarani")
-//    public @ResponseBody Collection<TaranDTO> taraniDtoToArrayList() {
-//        Collection<TaranDTO> arrayListOfTarani = new ArrayList<TaranDTO>();
-//
-//        return mainServiceDTO.taraniDtoToArrayList();
-//    }
-//
-//    @GetMapping(path = "/dtoAllPamanturi")
-//    public @ResponseBody Iterable<PamantDTO> getAllPamanturiDto() {
-//        // This returns a JSON or XML with the users
-//
-//        return mainServiceDTO.getAllPamanturi();
-//    }
-//
-//    @GetMapping(path = "/dtoAllTarani")
-//    public @ResponseBody Iterable<TaranDTO> getAllTaraniDto() {
-//        // This returns a JSON or XML with the users
-//
-//        return mainServiceDTO.getAllTarani();
-//    }
-
-
-
-
-
-//
-//    @Autowired
-//   private MainServiceCevadinDAO mainServiceDAO;
-//
-//    @RequestMapping(path="/daoLstPamanturi")
-//    public @ResponseBody Collection<Pamant> returnAnArraylistOfPamanturiDao(){
-//
-//        return mainServiceDAO.pamanturiDaoToArrayList();
-//    }
-//
-//    @RequestMapping(path="/daoLstTarani")
-//    public @ResponseBody Collection<Taran> returnAnArraylistOfaraniDao(){
-//
-//        return mainServiceDAO.taraniDaoToArrayList();
-//
-//    }
-//
-//    @GetMapping(path="/daoAllPamanturi")
-//    public @ResponseBody Iterable<Pamant> getAllPamanturiDao() {
-//
-//        return mainServiceDAO.getAllPamanturi();
-//    }
-//
-//    @GetMapping(path="/daoAllTarani")
-//    public @ResponseBody Iterable<Taran> getAllTaraniDao() {
-//
-//
-//        return mainServiceDAO.getAllTarani();
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 }

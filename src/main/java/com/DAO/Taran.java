@@ -4,9 +4,6 @@ package com.DAO;
  * Created by User on 7/26/2017.
  */
 import com.DTO.TaranDTO;
-import com.Exception.GenException;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -15,24 +12,16 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static javax.persistence.GenerationType.IDENTITY;
+
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name="tarani",catalog="ioni")
-//, uniqueConstraints={
-//        @UniqueConstraint(columnNames = "nume"),
-//        @UniqueConstraint(columnNames = "dataNastere"),
-//        @UniqueConstraint(columnNames = "gen")
-//})
-
-
 
 public class Taran implements java.io.Serializable {
 
-
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="id_taran",nullable = false)
+    @Column(name="id",nullable = false)
     private Long id;
 
     @Size(min=1,max = 45)
@@ -44,11 +33,13 @@ public class Taran implements java.io.Serializable {
     private Date dataNastere;
 
     @Column(name="gen",nullable = false)
+    @Enumerated(EnumType.STRING)
     private Gen gen;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id",targetEntity = Pamant.class)
-    private Set<Pamant> pamanturi = new HashSet<Pamant>(0);
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private Set<Pamant> pamanturi = new HashSet<Pamant>();
 
     public static Taran fromDTO(TaranDTO taranDto){
         Taran taran= new Taran();
@@ -61,7 +52,7 @@ public class Taran implements java.io.Serializable {
 
     public TaranDTO toDTO() {
         TaranDTO taranDTO = new TaranDTO();
-       // taranDTO.setId(getId());
+        taranDTO.setId(getId());
         taranDTO.setNume(getNume());
         taranDTO.setDataNastere(getDataNastere());
         taranDTO.setGen(getGen());
@@ -104,16 +95,19 @@ public class Taran implements java.io.Serializable {
         {e.printStackTrace(); }
     }
 
-    public Set<Pamant> getPamanturi(){
-        return this.pamanturi;
-    }
-
-    public void setPamanturi(Set<Pamant> pamanturi){
-        this.pamanturi =pamanturi;
-    }
+//    public Set<Pamant> getPamanturi(){
+//        return this.pamanturi;
+//    }
+//
+//    public void setPamanturi(Set<Pamant> pamanturi){
+//        this.pamanturi =pamanturi;
+//    }
 
     public void addPamant(Pamant pamant) {
         this.pamanturi.add(pamant);
+
+
+
     }
 
 

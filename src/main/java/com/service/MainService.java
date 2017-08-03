@@ -31,7 +31,7 @@ public class MainService {
     @Autowired
     public PamantRepository pamantRepository;
 
-    public  void addNewTaran (TaranDTO taran) throws Exception{
+    public  void addNewTaran (TaranDTO taran) throws GenException,AgeException {
 
 
         if(!isGenValid(taran.getGen())) {
@@ -44,112 +44,24 @@ public class MainService {
         taranRepository.save(Taran.fromDTO(taran));
     }
 
-    public  void addNewPamant (PamantDTO pamantDto, Long taranId) throws Exception{
+    public  void addNewPamant (PamantDTO pamantDto, Long taranId) throws NullTaranIdException,AreaException {
     if(!isPamantValid(pamantDto))
         throw new AreaException();
-        Taran taran =new Taran();
-        taran = taranRepository.findOne(taranId);
-try {
-    taran.addPamant(Pamant.fromDto(pamantDto));
-}catch (NullPointerException e){
-    throw new NullTaranIdException();
-}
-  //  taran.addPamant(Pamant.fromDto(pamantDto));
-    taranRepository.save(taran);
-        pamantRepository.save(Pamant.fromDto(pamantDto));
 
+        Taran taran = taranRepository.findOne(taranId);
+
+        if(taran==null)
+            throw new NullTaranIdException();
+
+            taran.addPamant(Pamant.fromDto(pamantDto));
+
+            taranRepository.save(taran);
 
     }
 
-    public void addTaran(TaranDTO taran) throws Exception {
-      //  PamantDTO pamant=new PamantDTO();
-
-
-        for (PamantDTO pamantInput:taran.getPamanturiDTO()) {
-            if(!isPamantValid(pamantInput)) {
-                throw new AreaException();
-            }
-            pamantRepository.save(Pamant.fromDto(pamantInput));
-
-        }
-
-        if(!isGenValid(taran.getGen())) {
-            throw new GenException();
-        }
-
-        if(!isAgeValid(taran.getDataNastere())) {
-            throw new AgeException();
-        }
-
-        taranRepository.save(Taran.fromDTO(taran));
+    public  Iterable<Taran> getAllTarani() {
+        return taranRepository.findAll();
     }
-
-
-
-
-
-
-
-
-//    public @ResponseBody
-//    Collection<Pamant> pamanturiDaoToArrayList(){
-//
-//        Collection<Pamant> arrayListOfPamanturi= new ArrayList<Pamant>();
-//
-//
-//        arrayListOfPamanturi=makeCollection(pamanturiDAORepository.findAll());
-//
-//        return arrayListOfPamanturi;
-//    }
-//
-//
-//
-//    public static  Collection<Pamant> makeCollection(Iterable<Pamant> iter) {
-//        Collection<Pamant> list = new ArrayList<Pamant>();
-//        for (Pamant item : iter) {
-//            list.add(item);
-//        }
-//        return list;
-//    }
-//
-//
-//
-//    public @ResponseBody
-//    Collection<Taran> taraniDaoToArrayList(){
-//        Collection<Taran> arrayListOfTarani= new ArrayList<Taran>();
-//        arrayListOfTarani=makeCollection2(taraniDAORepository.findAll());
-////        for (Taran tdo:         arrayListOfTarani)
-////            System.out.println(tdo.getId()+" "+tdo.getNume()+" "+tdo.getDataNastere()+" "+tdo.getGen());
-//
-//        return arrayListOfTarani;
-//
-//    }
-//
-//
-//
-////    public static  Collection<Taran> makeCollection2(Iterable<Taran> iter) {
-////        Collection<Taran> list = new ArrayList<Taran>();
-////        for (Taran item : iter) {
-////            list.add(item);
-////        }
-////        return list;
-////    }
-//
-//
-//
-//    public @ResponseBody Iterable<Pamant> getAllPamanturi() {
-//        // This returns a JSON or XML with the users
-//
-//        return pamanturiDAORepository.findAll();
-//    }
-//
-//
-//
-//    public @ResponseBody Iterable<Taran> getAllTarani() {
-//        // This returns a JSON or XML with the users
-//
-//        return taraniDAORepository.findAll();
-//    }
 
 
 

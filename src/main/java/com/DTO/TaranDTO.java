@@ -31,9 +31,9 @@ public class TaranDTO implements java.io.Serializable {
         return id;
     }
 
-//    public void setId(Integer id) {
-//        this.id = id;
-//    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNume() {
         return nume;
@@ -67,14 +67,7 @@ public class TaranDTO implements java.io.Serializable {
         this.pamanturiDTO=pamanturiDTO;
     }
 
-//    public static Taran toDao(TaranDTO taranDto){
-//        Taran taran= new Taran();
-//        taran.setId(taranDto.getId());
-//        taran.setNume(taranDto.getNume());
-//        taran.setDataNastere(taranDto.getDataNastere());
-//        taran.setGen(taranDto.getGen());
-//        return taran;
-//    }
+
 
 
 }

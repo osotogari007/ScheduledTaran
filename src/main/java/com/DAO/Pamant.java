@@ -10,14 +10,14 @@ import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
 @Table(name="pamanturi",catalog = "ioni")
 public class Pamant implements java.io.Serializable{
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id",unique = true,nullable = false)
-    private Integer id;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="id_pamant",unique = true,nullable = false)
+    private Integer id_pamant;
 
     @Column(name="latime", precision = 6)
     private Integer latime;
@@ -26,7 +26,6 @@ public class Pamant implements java.io.Serializable{
     private Integer lungime;
 
 
-  //  private Taran id_taran;
 
 public PamantDTO toDto(Pamant pamant)
     {
@@ -49,12 +48,12 @@ public static Pamant fromDto(PamantDTO pamantDTO){
 }
 
     public Integer getId(){
-        return this.id;
+        return this.id_pamant;
     }
 
 
     public void setId(Integer id) {
-        this.id = id;
+        this.id_pamant = id;
     }
 
     public Integer getLatime() {
@@ -72,4 +71,6 @@ public static Pamant fromDto(PamantDTO pamantDTO){
     public void setLungime(Integer lungime) {
         this.lungime = lungime;
     }
-}
+
+
+    }
